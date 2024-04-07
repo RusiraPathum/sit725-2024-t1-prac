@@ -1,30 +1,63 @@
-let express = require('express');
-let app = express();
+const express = require("express");
+const mongoose = require("mongoose");
 
-let port = 3000;
+const app = express();
+const port = 3000;
 
-app.use(express.static(__dirname +'/'));
-app.get('/', (req, res)=>{
-    res.render('index.html');
-})
+const uri = "mongodb+srv://root:RDzGRWTbUJhGSh4y@cluster1.2ockrve.mongodb.net/?retryWrites=true&w=majority";
 
-app.get('/addTwoNumbers', (req, res)=>{
+async function connect() {
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-    let value1 = req.query.num1;
-    let value2 = req.query.num2;
+const cardSchema = new mongoose.Schema({
+  title: String,
+  image: String,
+  link: String,
+  description: String,
+});
 
-    // let result = Number(value1) + Number(value2);
-    let result = parseInt(value1) + parseInt(value2);
+const Card = mongoose.model("Card", cardSchema);
 
-    let response = {
-        data:result,
-        statusCode:200,
-        message:'Success'
-    };
+connect();
 
-    res.json(response);
-})
+app.use(express.static(__dirname + "/"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.listen(port, ()=>{
-    console.log("App listening to: "+port)
+app.get("/", (req, res) => {
+  // If you intend to render HTML, set up a view engine and render here
+  res.send("Hello World!");
+});
+
+app.get("/api/projects", async (req, res) => {
+  try {
+    const cardList = await Card.find();
+    res.json({ statusCode: 200, data: cardList, message: "Success" });
+  } catch (error) {
+    res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
+  }
+});
+
+app.post("/api/projects", async (req, res) => {
+  try {
+    const { title, image, link, description } = req.body;
+    
+    // Create a new Card instance and save it to the database
+    const card = new Card({ title, image, link, description });
+    await card.save();
+
+    res.status(201).json({ statusCode: 201, message: "Card added successfully", data: card });
+  } catch (error) {
+    res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
+  }
+});
+
+app.listen(port, () => {
+  console.log("App listening to: " + port);
 });
