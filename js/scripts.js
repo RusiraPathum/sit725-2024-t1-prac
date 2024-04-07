@@ -1,28 +1,50 @@
-const cardList = [
-  {
-    title: "Kitten 2",
-    image: "images/kitten2.jpg",
-    link: "About Kitten 2",
-    desciption: "Demo desciption about kitten 2",
-  },
-  {
-    title: "Kitten 3",
-    image: "images/kitten3.jpg",
-    link: "About Kitten 3",
-    desciption: "Demo desciption about kitten 3",
-  },
-];
+// const cardList = [
+//   {
+//     title: "Kitten 2",
+//     image: "images/kitten2.jpg",
+//     link: "About Kitten 2",
+//     description: "Demo description about kitten 2",
+//   },
+//   {
+//     title: "Kitten 3",
+//     image: "images/kitten3.jpg",
+//     link: "About Kitten 3",
+//     description: "Demo description about kitten 3",
+//   },
+// ];
 const clickMe = () => {
   alert("Thanks for clicking me. Hope you have a nice day!");
 };
+// const submitForm = () => {
+//   let formData = {};
+//   formData.first_name = $("#first_name").val();
+//   formData.last_name = $("#last_name").val();
+//   formData.password = $("#password").val();
+//   formData.email = $("#email").val();
+//   console.log("Form Data Submitted: ", formData);
+// };
+
 const submitForm = () => {
-  let formData = {};
-  formData.first_name = $("#first_name").val();
-  formData.last_name = $("#last_name").val();
-  formData.password = $("#password").val();
-  formData.email = $("#email").val();
-  console.log("Form Data Submitted: ", formData);
+  let formData = {
+    title: $("#title").val(),
+    image: $("#path").val(),
+    link: $("#color").val(),
+    description: $("#des").val(),
+  };
+
+  // Send a POST request to add the new project
+  $.post("/api/projects", formData, (response) => {
+    if (response.statusCode === 201) {
+      // Project added successfully
+      alert("Project added successfully!");
+      location.reload();
+    } else {
+      // Error adding project
+      alert("Failed to add project. Please try again later.");
+    }
+  });
 };
+
 const addCards = (items) => {
   items.forEach((item) => {
     let itemToAppend =
@@ -41,17 +63,29 @@ const addCards = (items) => {
       item.title +
       '<i class="material-icons right">close</i></span>' +
       '<p class="card-text">' +
-      item.desciption +
+      item.description +
       "</p>" +
       "</div></div></div>";
     $("#card-section").append(itemToAppend);
   });
 };
+
+const getProjects = () => {
+  $.get("/api/projects", (response) => {
+    if (response.statusCode == 200) {
+      addCards(response.data);
+    }
+  });
+};
+
 $(document).ready(function () {
   $(".materialboxed").materialbox();
   $("#formSubmit").click(() => {
     submitForm();
   });
-  addCards(cardList);
+  // addCards(cardList);
+
+  getProjects();
+
   $(".modal").modal();
 });
