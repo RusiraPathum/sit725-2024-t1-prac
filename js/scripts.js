@@ -6,7 +6,7 @@ const addCards = (items) => {
       '<span class="card-title activator grey-text text-darken-4">'+item.title+'<i class="material-icons right">more_vert</i></span><p><a href="#">'+item.link+'</a></p></div>'+
       '<div class="card-reveal">'+
       '<span class="card-title grey-text text-darken-4">'+item.title+'<i class="material-icons right">close</i></span>'+
-      '<p class="card-text">'+item.desciption+'</p>'+
+      '<p class="card-text">'+item.description+'</p>'+
       '</div></div></div>';
       $("#card-section").append(itemToAppend)
   });
@@ -42,6 +42,7 @@ function postCat(cat) {
       type: 'POST',
       success: (result) => {
           console.log(result);
+          location.reload();
       }
   })
 }
