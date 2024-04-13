@@ -4,7 +4,7 @@ let controller = require("../controller/controller");
 
 router.get("/", async (req, res) => {
   //call controller logic
-  let result = await controller.getCats();
+  let result = await controller.getAllCats();
   res.json({ statusCode: 200, message: "success", data: result });
 });
 

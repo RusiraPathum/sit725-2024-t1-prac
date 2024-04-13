@@ -26,7 +26,7 @@ function submitForm() {
 }
 
 function getCats() {
-  $.get('api/cats', (response) => {
+  $.get('api/cat', (response) => {
       console.log(response.data);
       if (response.data) {
           addCards(response.data);

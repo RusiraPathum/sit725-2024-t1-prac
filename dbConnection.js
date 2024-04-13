@@ -1,5 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://root:RDzGRWTbUJhGSh4y@cluster1.2ockrve.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = "mongodb+srv://root:root@cluster1.2ockrve.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1";
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -15,9 +16,8 @@ async function run() {
       await client.db("admin").command({ ping: 1 });
       console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
-      await client.close();
+      // Don't close the client here, as it should be reused throughout the application
     }
 }
 
-module.exports =  {run} 
-
+module.exports = { client, run };

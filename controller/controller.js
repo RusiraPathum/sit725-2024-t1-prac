@@ -1,13 +1,13 @@
 let express = require("express");
-let catModal = require("express");
+let catModal = require("../modals/Cat");
 let router = express.Router();
 
-function getCats() {}
-
 async function postCat(cat) {
-  await client.connect();
-  let collection = await client.db().collection("Cats");
-  return collection.insertOne(cat);
+  return catModal.postCat(cat);
 }
 
-module.exports = { getCats, postCat };
+async function getAllCats(cat) {
+  return catModal.getAllCats(cat);
+}
+
+module.exports = { getAllCats, postCat };
