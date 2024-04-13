@@ -13,31 +13,6 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/cat", router);
 
-// app.post("/api/cat", (req, res) => {
-//   console.log("sasas");
-// });
-
-// const cardSchema = new mongoose.Schema({
-//   title: String,
-//   image: String,
-//   link: String,
-//   description: String,
-// });
-
-// const Card = mongoose.model("Card", cardSchema);
-
-// async function postCat(cat) {
-//   await client.connect();
-//   let collection = await client.db().collection('Cats');
-//   return collection.insertOne(cat);
-// }
-
-// async function getAllCats() {
-//   await client.connect();
-//   let collection = await client.db().collection('Cats');
-//   return collection.find().toArray();
-// }
-
 app.listen(port, () => {
   console.log("server started");
   //run().catch(console.dir);;

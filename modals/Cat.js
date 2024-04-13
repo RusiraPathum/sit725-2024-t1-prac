@@ -1,4 +1,5 @@
-let client = require('../dbConnection');
+const client = require('../dbConnection').client;
+
 let collection;
 
 async function getAllCats() {
