@@ -1,63 +1,44 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const app = express();
-const port = 3000;
+let app = express();
+let port = process.env.port || 3000;
 
-const uri = "mongodb+srv://root:RDzGRWTbUJhGSh4y@cluster1.2ockrve.mongodb.net/?retryWrites=true&w=majority";
-
-async function connect() {
-  try {
-    await mongoose.connect(uri);
-    console.log("Connected to MongoDB");
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const cardSchema = new mongoose.Schema({
-  title: String,
-  image: String,
-  link: String,
-  description: String,
-});
-
-const Card = mongoose.model("Card", cardSchema);
-
-connect();
+let client = require("./dbConnection");
+let router = require("./routes/routes");
 
 app.use(express.static(__dirname + "/"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  // If you intend to render HTML, set up a view engine and render here
-  res.send("Hello World!");
-});
+app.use("/api/cat", router);
 
-app.get("/api/projects", async (req, res) => {
-  try {
-    const cardList = await Card.find();
-    res.json({ statusCode: 200, data: cardList, message: "Success" });
-  } catch (error) {
-    res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
-  }
-});
+// app.post("/api/cat", (req, res) => {
+//   console.log("sasas");
+// });
 
-app.post("/api/projects", async (req, res) => {
-  try {
-    const { title, image, link, description } = req.body;
-    
-    // Create a new Card instance and save it to the database
-    const card = new Card({ title, image, link, description });
-    await card.save();
+// const cardSchema = new mongoose.Schema({
+//   title: String,
+//   image: String,
+//   link: String,
+//   description: String,
+// });
 
-    res.status(201).json({ statusCode: 201, message: "Card added successfully", data: card });
-  } catch (error) {
-    res.status(500).json({ statusCode: 500, message: "Internal Server Error" });
-  }
-});
+// const Card = mongoose.model("Card", cardSchema);
+
+// async function postCat(cat) {
+//   await client.connect();
+//   let collection = await client.db().collection('Cats');
+//   return collection.insertOne(cat);
+// }
+
+// async function getAllCats() {
+//   await client.connect();
+//   let collection = await client.db().collection('Cats');
+//   return collection.find().toArray();
+// }
 
 app.listen(port, () => {
-  console.log("App listening to: " + port);
+  console.log("server started");
+  //run().catch(console.dir);;
 });
