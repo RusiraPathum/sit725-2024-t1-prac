@@ -5,7 +5,7 @@ let url = "http://localhost:3000/api/cat";
 
 let cat = { name: "test cat" };
 
-describe("descript name", function () {
+describe("GET method", function () {
   it("it GET", function (done) {
     request(url, function (a, b, c) {
       console.log(arguments);
@@ -19,7 +19,7 @@ describe("descript name", function () {
   });
 });
 
-describe("descript POST", function () {
+describe("POST method", function () {
   it("Test POST", function (done) {
     request.post({ url: url, form: cat }, function (a, b, c) {
       let responseObj = JSON.parse(c);
