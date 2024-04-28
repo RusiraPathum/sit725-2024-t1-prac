@@ -5,8 +5,8 @@ let url = "http://localhost:3000/api/cat";
 
 let cat = { name: "test cat" };
 
-describe("GET method", function () {
-  it("it GET", function (done) {
+describe('Cat API Endpoint', function() {
+  it('should return an array of cats', function(done) {
     request(url, function (a, b, c) {
       console.log(arguments);
 
@@ -19,8 +19,8 @@ describe("GET method", function () {
   });
 });
 
-describe("POST method", function () {
-  it("Test POST", function (done) {
+describe('Create Cat API Endpoint', function() {
+  it('should create a new cat and return an object of cats', function(done) {
     request.post({ url: url, form: cat }, function (a, b, c) {
       let responseObj = JSON.parse(c);
       expect(responseObj).to.be.an("object");
